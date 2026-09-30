@@ -2,7 +2,7 @@
 
 API Sync Workbench is a client-only React demo that reconciles real DummyJSON resources with a browser-local IndexedDB database. It is designed to demonstrate reliable API integration work to prospective freelance clients without requiring a backend or credentials.
 
-[Open the public GitHub Pages demo](https://uhavenicemom.github.io/api-sync-workbench/).
+[Open the public GitHub Pages demo](https://dhordii.github.io/api-sync-workbench/).
 
 ![API Sync Workbench showing synchronized product data](docs/media/desktop.png)
 
