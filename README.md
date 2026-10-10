@@ -25,7 +25,7 @@ Ready-to-paste English and Ukrainian freelance project descriptions are availabl
 - Explicit conflict resolution with `Keep local` and `Use source`.
 - Atomic IndexedDB writes and persistent browser-local data.
 - Retry-safe failure recovery and an auditable run history.
-- JSON and spreadsheet-safe CSV export.
+- JSON and spreadsheet-safe CSV export, plus filtered XLSX export with record and column selection.
 - Responsive, keyboard-accessible light and dark interfaces.
 
 DummyJSON write operations are simulated and non-persistent. This project therefore treats DummyJSON as a read source and IndexedDB as the durable demo destination. The upstream-change control is clearly labeled as a simulation.
@@ -66,7 +66,7 @@ pnpm test:e2e
 5. Open **Local data** and edit a record.
 6. Enable **Change the source copy** in Demo controls, then fetch again.
 7. Compare both versions and choose which complete record to keep.
-8. Export the local resource as JSON or CSV.
+8. Export the local resource as JSON or CSV, or prepare a filtered XLSX by choosing records and columns.
 
 The **Fail the next request once** control demonstrates recovery without destroying the current configuration or previously stored data.
 
@@ -81,7 +81,7 @@ Three-way sync engine
    ↓ deterministic preview + decisions
 IndexedDB repository
    ↓ one transaction per applied resource
-Local records, history, JSON and CSV
+Local records, history, JSON, CSV and XLSX
 ```
 
 - `src/domain`: resource contracts, hashing, and deterministic reconciliation.
@@ -110,6 +110,7 @@ If only the source changed, the record can update. If only the local copy change
 - Clearing site storage removes the local database.
 - The application never silently deletes locally stored records.
 - CSV cells beginning with spreadsheet formula characters are neutralized.
+- XLSX exports store API text as literal cell values, preserve numeric types, and include native column filters.
 - API data is rendered through React and is never injected as raw HTML.
 
 ## GitHub Pages
@@ -125,7 +126,7 @@ Pushes and pull requests run verification only. A Pages deployment requires an e
 
 ## Current scope
 
-Included: Products, Users, local editing, record-level conflict decisions, recovery simulations, history, export, themes, desktop and mobile workflows.
+Included: Products, Users, local editing, record-level conflict decisions, recovery simulations, history, JSON/CSV export, filtered XLSX export, themes, desktop and mobile workflows.
 
 Excluded: authentication, backend storage, cloud accounts, scheduled sync, arbitrary API endpoints, field-level merge, automatic deletion, PWA background sync, and true two-way remote persistence.
 

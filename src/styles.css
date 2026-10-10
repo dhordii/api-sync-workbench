@@ -529,7 +529,9 @@ a {
 .compact-field select,
 .search-field,
 .drawer-form input,
-.drawer-form textarea {
+.drawer-form textarea,
+.export-field select,
+.range-fieldset input {
   border: 1px solid var(--rule-strong);
   color: var(--text);
   background: var(--surface);
@@ -1193,7 +1195,8 @@ dialog::backdrop {
   backdrop-filter: blur(3px);
 }
 
-.record-drawer {
+.record-drawer,
+.export-drawer {
   width: min(680px, calc(100% - 24px));
   max-width: none;
   height: 100dvh;
@@ -1207,6 +1210,17 @@ dialog::backdrop {
 }
 
 .record-drawer[open] {
+  animation: drawer-in 230ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.export-drawer {
+  width: min(980px, calc(100% - 24px));
+  overflow: hidden;
+}
+
+.export-drawer[open] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   animation: drawer-in 230ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -1233,6 +1247,350 @@ dialog::backdrop {
   margin: 5px 0 0;
   font-size: 25px;
   letter-spacing: -0.025em;
+}
+
+.export-header p {
+  max-width: 62ch;
+  margin: 8px 0 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.export-layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.export-controls,
+.export-records {
+  min-height: 0;
+  overflow: auto;
+}
+
+.export-controls {
+  border-right: 1px solid var(--rule);
+  background: var(--surface-muted);
+}
+
+.export-control-section {
+  padding: 22px 20px;
+}
+
+.export-control-section + .export-control-section {
+  border-top: 1px solid var(--rule);
+}
+
+.export-section-heading,
+.export-records-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.export-section-heading h3,
+.export-records-heading h3 {
+  margin: 0;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+}
+
+.export-section-heading > span,
+.export-records-heading p {
+  margin: 2px 0 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.text-button {
+  min-height: 30px;
+  padding: 4px 6px;
+  color: var(--accent);
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.text-button:hover {
+  background: var(--accent-soft);
+}
+
+.export-search {
+  width: 100%;
+  margin-top: 15px;
+  background: var(--surface);
+}
+
+.export-field {
+  display: grid;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.export-field > span,
+.range-fieldset legend,
+.range-fieldset label > span {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.export-field select,
+.range-fieldset input {
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 10px;
+  border-radius: var(--radius-control);
+  background: var(--surface);
+}
+
+.export-checklist {
+  margin-top: 12px;
+  overflow: hidden;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+}
+
+.export-checklist summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 42px;
+  padding: 8px 10px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.export-checklist summary::-webkit-details-marker {
+  display: none;
+}
+
+.export-checklist summary small {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.export-checklist[open] summary {
+  border-bottom: 1px solid var(--rule);
+}
+
+.export-checklist-options,
+.column-checklist {
+  display: grid;
+  max-height: 180px;
+  overflow: auto;
+}
+
+.export-checklist-options label,
+.column-checklist label {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 9px 10px;
+  font-size: 13px;
+}
+
+.export-checklist-options label + label,
+.column-checklist label + label {
+  border-top: 1px solid var(--rule);
+}
+
+.export-checklist-options input,
+.column-checklist input,
+.export-record-list input {
+  flex: 0 0 auto;
+  width: 17px;
+  height: 17px;
+  margin: 1px 0 0;
+  accent-color: var(--accent);
+}
+
+.range-fieldset {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  min-width: 0;
+  margin: 14px 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.range-fieldset legend {
+  margin-bottom: 7px;
+}
+
+.range-fieldset label {
+  display: grid;
+  gap: 5px;
+}
+
+.export-inline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 2px;
+}
+
+.export-control-section .export-inline-actions {
+  justify-content: flex-start;
+  margin: 10px 0 8px;
+}
+
+.column-checklist {
+  max-height: 280px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+}
+
+.column-checklist label > span {
+  display: grid;
+  min-width: 0;
+}
+
+.column-checklist small {
+  overflow: hidden;
+  color: var(--text-subtle);
+  font-family: "IBM Plex Mono", Consolas, monospace;
+  font-size: 10px;
+  text-overflow: ellipsis;
+}
+
+.export-records {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  background: var(--surface-raised);
+}
+
+.export-records-heading {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.export-record-list {
+  min-height: 0;
+  overflow: auto;
+}
+
+.export-record-list > label {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 62px;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--rule);
+  cursor: pointer;
+}
+
+.export-record-list > label:hover {
+  background: var(--surface-muted);
+}
+
+.export-record-list > label.is-selected {
+  background: color-mix(in srgb, var(--accent-soft) 50%, var(--surface));
+}
+
+.export-record-copy {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.export-record-copy strong,
+.export-record-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.export-record-copy strong {
+  font-size: 13px;
+}
+
+.export-record-copy small {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.export-state {
+  padding: 4px 7px;
+  color: var(--success);
+  border-radius: 999px;
+  background: var(--success-soft);
+  font-size: 10px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.export-state.is-modified {
+  color: var(--warning);
+  background: var(--warning-soft);
+}
+
+.export-empty {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  min-height: 260px;
+  padding: 32px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.export-empty strong {
+  margin-top: 12px;
+  color: var(--text);
+}
+
+.export-empty span {
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+.export-footer {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--rule);
+  background: var(--surface-raised);
+}
+
+.export-footer > div {
+  display: grid;
+  gap: 1px;
+}
+
+.export-footer > div strong {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.export-footer > div span {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.export-error {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 9px 11px;
+  color: var(--danger);
+  border-radius: var(--radius-control);
+  background: var(--danger-soft);
+  font-size: 12px;
 }
 
 .drawer-form,
@@ -1712,6 +2070,33 @@ dialog::backdrop {
     width: 100%;
   }
 
+  .export-drawer {
+    width: 100%;
+  }
+
+  .export-layout {
+    display: block;
+    overflow: auto;
+  }
+
+  .export-controls,
+  .export-records {
+    overflow: visible;
+  }
+
+  .export-controls {
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .export-records {
+    display: block;
+  }
+
+  .export-record-list {
+    overflow: visible;
+  }
+
   .field-grid,
   .resolution-actions {
     grid-template-columns: 1fr;
@@ -1760,7 +2145,7 @@ dialog::backdrop {
 
   .data-actions {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .data-actions .button {
@@ -1771,6 +2156,32 @@ dialog::backdrop {
   .drawer-form,
   .conflict-content {
     padding-inline: 18px;
+  }
+
+  .export-records-heading {
+    display: grid;
+    padding-inline: 18px;
+  }
+
+  .export-records-heading .export-inline-actions {
+    justify-content: flex-start;
+  }
+
+  .export-record-list > label {
+    padding-inline: 18px;
+  }
+
+  .export-footer {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .export-footer > div,
+  .export-footer .export-error {
+    grid-column: 1 / -1;
+  }
+
+  .export-footer .button {
+    width: 100%;
   }
 
   .confirm-dialog {
