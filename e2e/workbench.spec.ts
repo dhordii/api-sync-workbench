@@ -1,4 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
+import ExcelJS from "exceljs";
 import { expect, test, type Page } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 
@@ -174,7 +175,7 @@ test("switches to users and persists the validated resource", async ({ page }) =
   ).toBeVisible();
 });
 
-test("downloads inspectable JSON and CSV exports", async ({ page }) => {
+test("downloads inspectable JSON, CSV, and filtered XLSX exports", async ({ page }) => {
   await page.getByRole("button", { name: "Fetch changes" }).first().click();
   await page.getByRole("button", { name: "Apply sync" }).click();
   await page.getByRole("button", { name: "View local data" }).click();
@@ -211,6 +212,34 @@ test("downloads inspectable JSON and CSV exports", async ({ page }) => {
   const csv = await readFile(csvPath, "utf8");
   expect(csv).toContain('"title"');
   expect(csv).toContain('"Arc desk lamp"');
+
+  await page.getByRole("button", { name: "XLSX" }).click();
+  await expect(page.getByRole("heading", { name: "Prepare XLSX export" })).toBeVisible();
+  await page.getByRole("searchbox", { name: "Search export records" }).fill("Oak");
+  await expect(page.getByText("1 selected from 1 matching records")).toBeVisible();
+  await page.getByRole("checkbox", { name: "Stock (stock)" }).uncheck();
+
+  const [xlsxDownload] = await Promise.all([
+    page.waitForEvent("download"),
+    page.getByRole("button", { name: "Download XLSX" }).click(),
+  ]);
+  const xlsxPath = await xlsxDownload.path();
+  if (xlsxPath === null) {
+    throw new Error("Playwright did not provide a path for the XLSX download.");
+  }
+  const xlsxBytes = new Uint8Array(await readFile(xlsxPath));
+  const workbook = new ExcelJS.Workbook();
+  await workbook.xlsx.load(xlsxBytes.buffer);
+  const worksheet = workbook.getWorksheet("Products");
+  const headers = worksheet?.getRow(1).values;
+
+  expect(headers).toContain("Product");
+  expect(headers).not.toContain("Stock");
+  expect(worksheet?.rowCount).toBe(2);
+  expect(worksheet?.getCell("B2").value).toBe("Oak side table");
+  expect(worksheet?.autoFilter).toBe("A1:E1");
+  expect(worksheet?.views[0]).toMatchObject({ state: "frozen", ySplit: 1 });
+  await expect(page.getByText("XLSX export ready")).toBeVisible();
 });
 
 test("has no automatically detectable accessibility violations", async ({ page }) => {

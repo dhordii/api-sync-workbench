@@ -1,5 +1,7 @@
 # Product
 
+<!-- impeccable:product-schema 1 -->
+
 ## Platform
 
 web
@@ -34,7 +36,7 @@ The interface opens directly as an operational dashboard. DummyJSON supplies `pr
 - Preview categories: new, updated, unchanged, locally modified, conflict, and invalid.
 - Local records are editable through a detail drawer.
 - Conflicts are resolved per record with `Keep local` or `Use source`.
-- JSON and CSV export are supported.
+- JSON and CSV export are supported. XLSX export lets visitors filter the current local resource, exclude individual records, choose columns, and download a typed worksheet with native Excel filters.
 - Demo controls provide API delay, a one-shot request failure, and a clearly labeled upstream-change simulation.
 - Light, dark, and system themes are supported.
 - All primary workflows remain functional on desktop and mobile.

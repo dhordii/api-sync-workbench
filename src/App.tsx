@@ -9,6 +9,7 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CommandBar } from "./components/CommandBar";
 import { ConfirmDialog } from "./components/ConfirmDialog";
+import { ExportDrawer } from "./components/ExportDrawer";
 import { HistoryView } from "./components/HistoryView";
 import { LedgerStrip } from "./components/LedgerStrip";
 import { Notice, type NoticeTone } from "./components/Notice";
@@ -77,6 +78,7 @@ export function App() {
   const [notice, setNotice] = useState<NoticeState | null>(null);
   const [drawer, setDrawer] = useState<DrawerState | null>(null);
   const [confirmClear, setConfirmClear] = useState(false);
+  const [exportOpen, setExportOpen] = useState(false);
   const previewStartedAt = useRef<Date | null>(null);
   const fetchAbort = useRef<AbortController | null>(null);
 
@@ -124,6 +126,7 @@ export function App() {
     setPhase("idle");
     setView("preview");
     setSimulateUpstream(false);
+    setExportOpen(false);
   };
 
   const handleFetch = useCallback(async () => {
@@ -401,6 +404,12 @@ export function App() {
                   <DownloadSimple aria-hidden="true" size={16} /> CSV
                 </button>
                 <button
+                  className="button button-secondary button-small"
+                  onClick={() => setExportOpen(true)}
+                >
+                  <DownloadSimple aria-hidden="true" size={16} /> XLSX
+                </button>
+                <button
                   className="button button-quiet button-small danger-text"
                   onClick={() => setConfirmClear(true)}
                 >
@@ -513,6 +522,22 @@ export function App() {
         onClose={() => setDrawer(null)}
         onSave={handleSaveLocalEdit}
         onResolve={handleResolution}
+      />
+
+      <ExportDrawer
+        open={exportOpen}
+        resource={resource}
+        records={records}
+        onClose={() => setExportOpen(false)}
+        onExported={(count) => {
+          setExportOpen(false);
+          setNotice({
+            tone: "success",
+            title: "XLSX export ready",
+            message: `${count} ${count === 1 ? "record was" : "records were"} exported from the current local resource.`,
+            actionLabel: null,
+          });
+        }}
       />
 
       <ConfirmDialog

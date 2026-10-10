@@ -271,7 +271,11 @@ The form language is softly technical: rectangular surfaces with controlled roun
 
 ### Navigation
 
-Workspace tabs are quiet, horizontally scrollable controls with a two-pixel cobalt underline for the active view. Each label can carry a neutral count pill. Export and clear actions stay at the opposite edge on desktop, then form an even three-column action row on narrow screens.
+Workspace tabs are quiet, horizontally scrollable controls with a two-pixel cobalt underline for the active view. Each label can carry a neutral count pill. Export and clear actions stay at the opposite edge on desktop, then form an even two-column action grid on narrow screens.
+
+### XLSX Export Drawer
+
+The XLSX action opens a right-side preparation drawer because record filtering, row selection, and column selection form one protected task. Filters and columns occupy a muted control rail while the selectable record ledger remains the primary surface. The sticky footer always states the exact record and column counts before download. On mobile, the drawer fills the viewport and the two regions stack without hiding controls or selected-state feedback.
 
 ### Sync Rail
 
